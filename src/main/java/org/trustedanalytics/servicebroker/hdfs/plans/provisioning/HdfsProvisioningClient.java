@@ -16,7 +16,9 @@
 package org.trustedanalytics.servicebroker.hdfs.plans.provisioning;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.*;
@@ -80,8 +82,8 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
       AclEntry systemDefaultUserAcl = builder.setScope(AclEntryScope.DEFAULT).build();
       AclEntry systemUserAcl = builder.setScope(AclEntryScope.ACCESS).build();
 
-      superUserHdfsClient.addAclEntry(path, systemUserAcl);
-      superUserHdfsClient.addAclEntry(path, systemDefaultUserAcl);
+      setAclRecursively(path, systemUserAcl);
+      setAclRecursively(path, systemDefaultUserAcl);
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to add system users groups ACL for path: " + path, e);
     }
@@ -98,8 +100,8 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
       AclEntry hiveDefaultUserAcl = builder.setScope(AclEntryScope.DEFAULT).build();
       AclEntry hiveUserAcl = builder.setScope(AclEntryScope.ACCESS).build();
 
-      superUserHdfsClient.addAclEntry(path, hiveUserAcl);
-      superUserHdfsClient.addAclEntry(path, hiveDefaultUserAcl);
+      setAclRecursively(path, hiveUserAcl);
+      setAclRecursively(path, hiveDefaultUserAcl);
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to add system users groups ACL for path: " + path, e);
     }
@@ -113,6 +115,15 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
     } catch (IOException e) {
       throw new ServiceBrokerException(
           "Unable to provision encrypted directory for: " + instanceId, e);
+    }
+  }
+
+  private void setAclRecursively(String path, AclEntry acl) throws IOException {
+    superUserHdfsClient.addAclEntry(path, acl);
+
+    for(String file:superUserHdfsClient.listFiles(path, true)) {
+      if(superUserHdfsClient.isDirectory(file) || !acl.getScope().equals(AclEntryScope.DEFAULT))
+        superUserHdfsClient.addAclEntry(file , acl);
     }
   }
 }

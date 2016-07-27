@@ -88,9 +88,11 @@ public final class HdfsPlanCreateUserDirectoryTest extends HdfsPlanTestBase {
     when(groupMappingOperations.createSysUser(any(UUID.class), any(UUID.class), anyString()))
         .thenReturn(userId);
     planUnderTest.provision(serviceInstance, Optional.of(ImmutableMap.of()));
-    
+
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveUserAcl());
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveDefaultUserAcl());
+
+    verify(encryptedHdfsClient, times(2)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
 
     verify(groupMappingOperations).createSysUser(eq(orgId), eq(instanceId), anyString());
     verify(hdfsClient).createDir(path);

@@ -49,23 +49,25 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
   }
 
   @Override
-  public void provisionDirectory(UUID instanceId, UUID orgId) throws ServiceBrokerException {
+  public String provisionDirectory(UUID instanceId, UUID orgId) throws ServiceBrokerException {
     try {
       String path = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
       hdfsClient.createDir(path);
       hdfsClient.setPermission(path, FS_PERMISSION);
-      addHiveUserGroupAcl(path,orgId);
+      addHiveUserGroupAcl(path, orgId);
+      return path;
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to provision directory for: " + instanceId, e);
     }
   }
 
   @Override
-  public void provisionDirectory(UUID instanceId, UUID orgId, UUID owner) throws ServiceBrokerException {
+  public String provisionDirectory(UUID instanceId, UUID orgId, UUID owner) throws ServiceBrokerException {
     this.provisionDirectory(instanceId, orgId);
     try {
       String path = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
       superUserHdfsClient.setOwner(path, owner.toString(), orgId.toString());
+      return path;
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to provision directory for: " + instanceId, e);
     }

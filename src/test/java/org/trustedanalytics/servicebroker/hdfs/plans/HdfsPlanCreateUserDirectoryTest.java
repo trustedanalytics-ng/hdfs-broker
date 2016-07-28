@@ -92,7 +92,12 @@ public final class HdfsPlanCreateUserDirectoryTest extends HdfsPlanTestBase {
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveUserAcl());
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveDefaultUserAcl());
 
-    verify(encryptedHdfsClient, times(2)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
+    verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(),
+        TestUtil.userAcl(orgId.toString() + "_sys"));
+    verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(),
+        TestUtil.defaultUserAcl(orgId.toString() + "_sys"));
+
+    verify(encryptedHdfsClient, times(4)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
 
     verify(groupMappingOperations).createSysUser(eq(orgId), eq(instanceId), anyString());
     verify(hdfsClient).createDir(path);

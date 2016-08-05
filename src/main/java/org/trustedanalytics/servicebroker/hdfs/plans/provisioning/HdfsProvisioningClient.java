@@ -16,9 +16,7 @@
 package org.trustedanalytics.servicebroker.hdfs.plans.provisioning;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.*;

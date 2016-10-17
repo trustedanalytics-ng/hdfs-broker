@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.trustedanalytics.cfbroker.store.hdfs.service.HdfsClient;
 import org.trustedanalytics.cfbroker.store.hdfs.service.SimpleHdfsClient;
 
@@ -32,11 +31,11 @@ public class ServiceInstanceProvisioningConfig {
   private static final Logger LOGGER = LoggerFactory.getLogger(ServiceInstanceProvisioningConfig.class);
 
   @Autowired
-  @Qualifier(HdfsConstants.USER_QUALIFIER)
+  @Qualifier(Qualifiers.USER_QUALIFIER)
   private FileSystem fs;
 
   @Autowired
-  @Qualifier(HdfsConstants.SUPER_USER_QUALIFIER)
+  @Qualifier(Qualifiers.SUPER_USER_QUALIFIER)
   private FileSystem adminFs;
 
   @Autowired

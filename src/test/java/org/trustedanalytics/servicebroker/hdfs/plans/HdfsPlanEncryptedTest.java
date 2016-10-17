@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.permission.*;
+import org.apache.hadoop.fs.permission.FsAction;
+import org.apache.hadoop.fs.permission.FsPermission;
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.junit.Before;
@@ -34,10 +36,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.trustedanalytics.cfbroker.store.hdfs.service.HdfsClient;
+import org.trustedanalytics.servicebroker.hdfs.config.HdfsConstants;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsBindingClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsProvisioningClientFactory;
-
-import com.google.common.collect.ImmutableMap;
 import org.trustedanalytics.servicebroker.hdfs.util.TestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,13 +55,18 @@ public final class HdfsPlanEncryptedTest extends HdfsPlanTestBase {
   private HdfsClient hdfsClient;
 
   @Mock
+  private Configuration hadoopConfiguration;
+
+  @Mock
   private HdfsClient encryptedHdfsClient;
 
   @Before
   public void setup() {
     planUnderTest = new HdfsPlanEncrypted(
         HdfsProvisioningClientFactory.create(hdfsClient, encryptedHdfsClient, USERSPACE_PATH_TEMPLATE),
-        HdfsBindingClientFactory.create(getInputCredentials(), USERSPACE_PATH_TEMPLATE));
+        HdfsBindingClientFactory.create(hadoopConfiguration, USERSPACE_PATH_TEMPLATE));
+
+    when(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS)).thenReturn("hdfs://name1/");
   }
 
   @Test

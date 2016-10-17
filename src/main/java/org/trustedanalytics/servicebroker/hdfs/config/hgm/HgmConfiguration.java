@@ -17,11 +17,11 @@ package org.trustedanalytics.servicebroker.hdfs.config.hgm;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Configuration
 public class HgmConfiguration {
@@ -43,8 +43,8 @@ public class HgmConfiguration {
   @Getter @Setter
   private String principal;
 
-  @Value("${group.mapping.kerberos.principalKeyTab}")
+  @Value("${group.mapping.kerberos.keytab.path}")
   @Getter @Setter
-  private String principalKeyTab;
+  private String keytabPath;
 
 }

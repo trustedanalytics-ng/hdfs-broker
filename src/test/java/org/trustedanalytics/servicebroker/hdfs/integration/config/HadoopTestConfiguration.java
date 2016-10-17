@@ -13,29 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.servicebroker.hdfs.config.hgm;
+package org.trustedanalytics.servicebroker.hdfs.integration.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.kerberos.client.KerberosRestTemplate;
 import org.springframework.web.client.RestTemplate;
 import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
 
-@Profile(Qualifiers.KERBEROS)
-@Configuration
-public class HgmKerberosConfiguration {
+@org.springframework.context.annotation.Configuration
+public class HadoopTestConfiguration {
 
-  @Autowired
-  private HgmConfiguration configuration;
+  @Bean
+  public Configuration getHadoopConfiguration() throws IOException {
+    Configuration config = new Configuration();
+    config.addResource(getTestResourcePath("hdfs-site.xml"));
+    config.addResource(getTestResourcePath(("core-site.xml")));
+    return config;
+  }
 
   @Bean
   @Qualifier(Qualifiers.HGM_CONFIGURATION)
-  public RestTemplate getHgmKerberosRestClient() throws IOException {
-    return new KerberosRestTemplate(configuration.getKeytabPath(), configuration.getPrincipal());
+  public RestTemplate getHgmTestConfiguration() throws IOException {
+    return new RestTemplate();
+  }
+
+  private Path getTestResourcePath(String name) {
+    return new Path(Thread.currentThread().getContextClassLoader().getResource(name).getPath());
   }
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hdfs-broker</artifactId>
-    <version>0.11.13</version>
+    <version>0.12.0</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
@@ -16,8 +17,10 @@
         <brokerStoreVersion>0.6.3</brokerStoreVersion>
         <start-class>org.trustedanalytics.servicebroker.hdfs.config.Application</start-class>
         <jacoco-measurement-instructions>0.4700</jacoco-measurement-instructions>
-        <jacoco-measurement-lines>0.6400</jacoco-measurement-lines>
-        <jacoco-measurement-classes>0.7600</jacoco-measurement-classes>
+        <jacoco-measurement-lines>0.6200</jacoco-measurement-lines>
+        <jacoco-measurement-classes>0.6400</jacoco-measurement-classes>
+        <docker.imageName>${project.artifactId}</docker.imageName>
+        <docker.registry>tapimages.us.enableiot.com:8080</docker.registry>
     </properties>
 
     <build>
@@ -32,6 +35,24 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.12</version>
+                <configuration>
+                    <imageName>${docker.imageName}</imageName>
+                    <baseImage>${docker.registry}/tap-base-java:java8-jessie</baseImage>
+                    <cmd>java $JAVA_OPTS -jar /${project.build.finalName}.jar</cmd>
+                    <useConfigFile>true</useConfigFile>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -57,7 +78,8 @@
                         <include>pack.sh</include>
                     </includes>
                     <excludes>
-                        <exclude>src/main/java/org/trustedanalytics/servicebroker/hdfs/config/BrokerConfig.java</exclude>
+                        <exclude>src/main/java/org/trustedanalytics/servicebroker/hdfs/config/BrokerConfig.java
+                        </exclude>
                     </excludes>
                     <mapping>
                         <java>JAVADOC_STYLE</java>
@@ -73,25 +95,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>cp</executable>
-                    <arguments>
-                        <argument>target/classes/manifest.yml</argument>
-                        <argument>manifest.yml</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -149,7 +152,7 @@
             <version>1.16.8</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Broker-Store dependencies for instance and binding serialziation -->
+        <!-- Broker-Store dependencies for instance and binding serialization -->
         <dependency>
             <groupId>org.trustedanalytics.servicebroker.repository</groupId>
             <artifactId>broker-store-commons</artifactId>
@@ -178,7 +181,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Hadoop dependecies -->
+        <!-- Hadoop dependencies -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
@@ -282,11 +285,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Broker library dependecies -->
+        <!-- Broker library dependencies -->
         <dependency>
             <groupId>org.trustedanalytics</groupId>
             <artifactId>broker-lib</artifactId>
-            <version>0.6.3</version>
+            <version>0.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.trustedanalytics</groupId>

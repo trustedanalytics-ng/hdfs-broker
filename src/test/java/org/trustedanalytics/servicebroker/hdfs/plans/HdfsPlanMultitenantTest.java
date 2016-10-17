@@ -21,8 +21,10 @@ import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFacto
 
 import java.util.Map;
 
+import org.apache.hadoop.conf.Configuration;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.junit.Test;
+import org.trustedanalytics.servicebroker.hdfs.config.HdfsConstants;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsBindingClientFactory;
 
 import com.google.common.collect.ImmutableMap;
@@ -33,8 +35,10 @@ public final class HdfsPlanMultitenantTest extends HdfsPlanTestBase {
   public void bind_templateWithOrgAndInstanceVariables_replaceInstanceVariableOnlyAndAppendUriToCredentialsMap()
       throws Exception {
     //arrange
+    Configuration hadoopConfiguration = new Configuration();
+    hadoopConfiguration.set(HdfsConstants.HADOOP_DEFAULT_FS ,"hdfs://name1/");
     HdfsPlanMultitenant plan =
-        new HdfsPlanMultitenant(HdfsBindingClientFactory.create(getInputCredentials(), USERSPACE_PATH_TEMPLATE));
+        new HdfsPlanMultitenant(HdfsBindingClientFactory.create(hadoopConfiguration, USERSPACE_PATH_TEMPLATE));
 
     //act
     ServiceInstance serviceInstance = getServiceInstance();
@@ -49,12 +53,6 @@ public final class HdfsPlanMultitenantTest extends HdfsPlanTestBase {
     String instanceId = serviceInstance.getServiceInstanceId();
     //@formatter:off
     return ImmutableMap.of(
-        "key1", ImmutableMap.of(
-            "innerKey1", "innerValue1",
-            "innerKey2", "innerValue2"
-        ),
-        "key2", "value2",
-        "fs.defaultFS", "hdfs://name1",
         "uri", "hdfs://name1/org/%{organization}/brokers/userspace/" + instanceId + "/"
     );
     //@formatter:on

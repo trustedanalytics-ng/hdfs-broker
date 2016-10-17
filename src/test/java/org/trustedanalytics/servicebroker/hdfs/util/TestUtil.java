@@ -22,28 +22,26 @@ import org.apache.hadoop.fs.permission.AclEntryType;
 import org.apache.hadoop.fs.permission.FsAction;
 
 public class TestUtil {
-    public static final String HIVE_USER = "hive";
+  public static final String HIVE_USER = "hive";
 
-    public static AclEntry hiveDefaultUserAcl(){
-        return defaultUserAcl(TestUtil.HIVE_USER);
-    }
+  public static AclEntry hiveDefaultUserAcl() {
+    return defaultUserAcl(TestUtil.HIVE_USER);
+  }
 
-    public static AclEntry hiveUserAcl(){
-        return userAcl(TestUtil.HIVE_USER);
-    }
+  public static AclEntry hiveUserAcl() {
+    return userAcl(TestUtil.HIVE_USER);
+  }
 
-    public static AclEntry defaultUserAcl(String user){
-        return build(user).setScope(AclEntryScope.DEFAULT).build();
-    }
+  public static AclEntry defaultUserAcl(String user) {
+    return build(user).setScope(AclEntryScope.DEFAULT).build();
+  }
 
-    public static AclEntry userAcl(String user){
-        return build(user).setScope(AclEntryScope.ACCESS).build();
-    }
+  public static AclEntry userAcl(String user) {
+    return build(user).setScope(AclEntryScope.ACCESS).build();
+  }
 
-    private static AclEntry.Builder build(String user){
-        return new AclEntry.Builder()
-            .setType(AclEntryType.GROUP)
-            .setPermission(FsAction.ALL)
-            .setName(user);
-    }
+  private static AclEntry.Builder build(String user) {
+    return new AclEntry.Builder().setType(AclEntryType.GROUP).setPermission(FsAction.ALL)
+        .setName(user);
+  }
 }

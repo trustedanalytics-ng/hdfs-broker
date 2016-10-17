@@ -17,10 +17,11 @@ package org.trustedanalytics.servicebroker.hdfs.config;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Configuration
 public class ExternalConfiguration {
@@ -35,24 +36,28 @@ public class ExternalConfiguration {
   @Getter @Setter
   private String password;
 
+  @Value("${store.keytabPath}")
+  @NotNull
+  @Getter @Setter
+  private String keytabPah;
+
   @Value("${hdfs.userspace.chroot}")
   @NotNull
   @Getter @Setter
   private String userspaceChroot;
-
-  @Value("${hdfs.provided.zip}")
-  @NotNull
-  @Getter @Setter
-  private String hdfsProvidedZip;
 
   @Value("${hdfs.superuser}")
   @NotNull
   @Getter @Setter
   private String hdfsSuperuser;
 
-  @Value("${hdfs.keytab}")
+  @Value("${hdfs.keytab.path}")
   @NotNull
   @Getter @Setter
-  private String hdfsSuperuserKeytab;
+  private String keytabPath;
 
+  @Value("${hdfs.configuration.path}")
+  @NotNull
+  @Getter @Setter
+  private String configurationPath;
 }

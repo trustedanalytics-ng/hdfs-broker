@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.servicebroker.hdfs.plans.binding;
+package org.trustedanalytics.servicebroker.hdfs.config;
 
-import java.util.Map;
-
-public interface HdfsBareBindingOperations {
-  Map<String, Object> createCredentialsMap();
+public final class Qualifiers {
+  public static final String KERBEROS = "kerberos";
+  public static final String SIMPLE = "simple";
+  public static final String HGM_CONFIGURATION = "hgmRestTemplate";
+  public static final String USER_QUALIFIER = "user";
+  public static final String SUPER_USER_QUALIFIER = "superUser";
 }

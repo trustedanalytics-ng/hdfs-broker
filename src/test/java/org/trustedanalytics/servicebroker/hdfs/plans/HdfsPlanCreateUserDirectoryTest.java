@@ -25,7 +25,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.hadoop.fs.permission.*;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.permission.FsAction;
+import org.apache.hadoop.fs.permission.FsPermission;
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.junit.Before;
@@ -35,12 +37,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.trustedanalytics.cfbroker.store.hdfs.service.HdfsClient;
 import org.trustedanalytics.servicebroker.framework.store.zookeeper.ZookeeperCredentialsStore;
+import org.trustedanalytics.servicebroker.hdfs.config.HdfsConstants;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsBindingClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsProvisioningClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.users.GroupMappingOperations;
+import org.trustedanalytics.servicebroker.hdfs.util.TestUtil;
 
 import com.google.common.collect.ImmutableMap;
-import org.trustedanalytics.servicebroker.hdfs.util.TestUtil;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -55,6 +58,9 @@ public final class HdfsPlanCreateUserDirectoryTest extends HdfsPlanTestBase {
   private static final String URI = "uri";
 
   private HdfsPlanCreateUserDirectory planUnderTest;
+
+  @Mock
+  private Configuration hadoopConfiguration;
 
   @Mock
   private HdfsClient hdfsClient;
@@ -73,8 +79,8 @@ public final class HdfsPlanCreateUserDirectoryTest extends HdfsPlanTestBase {
     planUnderTest =
         new HdfsPlanCreateUserDirectory(HdfsProvisioningClientFactory.create(hdfsClient,
             encryptedHdfsClient, USERSPACE_PATH_TEMPLATE), HdfsBindingClientFactory.create(
-            getInputCredentials(), USERSPACE_PATH_TEMPLATE), groupMappingOperations,
-            zookeeperCredentialsStore);
+            hadoopConfiguration, USERSPACE_PATH_TEMPLATE), groupMappingOperations, zookeeperCredentialsStore);
+    when(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS)).thenReturn("hdfs://name1/");
   }
 
   @Test

@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
 import org.trustedanalytics.servicebroker.hdfs.config.hgm.HgmConfiguration;
 import org.trustedanalytics.servicebroker.hdfs.users.entity.User;
 
@@ -39,7 +40,7 @@ public class GroupMappingOperations {
   private HgmConfiguration configuration;
 
   @Autowired
-  @Qualifier("hgmRestTemplate")
+  @Qualifier(Qualifiers.HGM_CONFIGURATION)
   private RestTemplate restTemplate;
 
   public UUID createSysUser(UUID groupId, UUID userId, String password) throws ServiceBrokerException {

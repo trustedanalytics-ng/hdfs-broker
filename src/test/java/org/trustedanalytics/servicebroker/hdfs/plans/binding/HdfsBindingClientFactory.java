@@ -15,10 +15,10 @@
  */
 package org.trustedanalytics.servicebroker.hdfs.plans.binding;
 
-import org.trustedanalytics.servicebroker.framework.Credentials;
+import org.apache.hadoop.conf.Configuration;
 
 public class HdfsBindingClientFactory {
-  public static HdfsBindingClient create(Credentials credentials, String userspacePathTemplate){
-    return new HdfsBindingClient(credentials, userspacePathTemplate);
+  public static HdfsBindingClient create(Configuration config, String userspacePathTemplate){
+    return new HdfsBindingClient(config, userspacePathTemplate);
   }
 }

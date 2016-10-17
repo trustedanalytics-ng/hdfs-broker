@@ -28,6 +28,6 @@ public class KerberosLocalConfiguration {
   @Bean
   @Profile("integration-test")
   public KerberosProperties getKerberosProperties() throws IOException {
-    return new KerberosProperties("kdc", "realm", "cacert", false);
+    return new KerberosProperties("kdc", "realm");
   }
 }

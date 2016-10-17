@@ -15,9 +15,9 @@
  */
 package org.trustedanalytics.servicebroker.hdfs.plans.provisioning;
 
-import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
-
 import java.util.UUID;
+
+import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 
 public interface HdfsDirectoryProvisioningOperations {
   String provisionDirectory(UUID instanceId, UUID orgId) throws ServiceBrokerException;

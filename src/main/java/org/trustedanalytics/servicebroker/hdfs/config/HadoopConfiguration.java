@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.trustedanalytics.servicebroker.hdfs.config.hgm;
+package org.trustedanalytics.servicebroker.hdfs.config;
 
 import java.io.IOException;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.kerberos.client.KerberosRestTemplate;
-import org.springframework.web.client.RestTemplate;
-import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
+import org.trustedanalytics.servicebroker.framework.Profiles;
 
-@Profile(Qualifiers.KERBEROS)
-@Configuration
-public class HgmKerberosConfiguration {
+@Profile({Profiles.KERBEROS, Profiles.SIMPLE})
+@org.springframework.context.annotation.Configuration
+public class HadoopConfiguration {
 
   @Autowired
-  private HgmConfiguration configuration;
+  public ExternalConfiguration configuration;
 
   @Bean
-  @Qualifier(Qualifiers.HGM_CONFIGURATION)
-  public RestTemplate getHgmKerberosRestClient() throws IOException {
-    return new KerberosRestTemplate(configuration.getKeytabPath(), configuration.getPrincipal());
+  public Configuration getHadoopConfiguration() throws IOException {
+    Configuration config = new Configuration();
+    String configurationPath = configuration.getConfigurationPath();
+    config.addResource(new Path(configurationPath + "core-site.xml"));
+    config.addResource(new Path(configurationPath + "hdfs-site.xml"));
+    return config;
   }
 }

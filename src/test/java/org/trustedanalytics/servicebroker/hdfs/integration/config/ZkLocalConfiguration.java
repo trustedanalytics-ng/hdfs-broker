@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClientBuilder;
 import org.trustedanalytics.servicebroker.framework.Qualifiers;
@@ -51,7 +50,8 @@ public class ZkLocalConfiguration {
   public TestingServer initEmbededZKServer() throws Exception {
     TestingServer zkServer = new TestingServer();
     zkServer.start();
-    ZooKeeperCredentials credendials = new ZooKeeperCredentials(zkServer.getConnectString(), user, password);
+    ZooKeeperCredentials credendials =
+        new ZooKeeperCredentials(zkServer.getConnectString(), user, password);
     ZooKeeperTestOperations.createSecuredNode(credendials, brokerStoreNode);
     return zkServer;
   }
@@ -61,7 +61,8 @@ public class ZkLocalConfiguration {
   @Profile("integration-test")
   public ZookeeperClient getZkClient(TestingServer zkServer) throws IOException {
     ZookeeperClient client =
-        new ZookeeperClientBuilder(zkServer.getConnectString(), user, password, brokerStoreNode).build();
+        new ZookeeperClientBuilder(zkServer.getConnectString(), user, password, brokerStoreNode)
+            .build();
     return client;
   }
 }

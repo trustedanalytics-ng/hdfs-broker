@@ -17,6 +17,4 @@ package org.trustedanalytics.servicebroker.hdfs.config;
 
 public class HdfsConstants {
   public static final String HADOOP_DEFAULT_FS = "fs.defaultFS";
-  public static final String USER_QUALIFIER = "user";
-  public static final String SUPER_USER_QUALIFIER = "superUser";
 }

@@ -38,9 +38,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import org.trustedanalytics.servicebroker.hdfs.config.hgm.HgmConfiguration;
+import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
 
-@Profile("!kerberos")
+@Profile(Qualifiers.SIMPLE)
 @Configuration
 public class HgmHttpsConfiguration {
 
@@ -48,7 +48,7 @@ public class HgmHttpsConfiguration {
   private HgmConfiguration configuration;
 
   @Bean
-  @Qualifier("hgmRestTemplate")
+  @Qualifier(Qualifiers.HGM_CONFIGURATION)
   public RestTemplate getHgmHttpsRestTemplate() throws KeyStoreException, NoSuchAlgorithmException,
       KeyManagementException {
     SSLContext sslContext =

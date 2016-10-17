@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.permission.AclEntry;
 import org.apache.hadoop.fs.permission.FsAction;
 import org.apache.hadoop.fs.permission.FsPermission;
@@ -36,11 +37,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.trustedanalytics.cfbroker.store.hdfs.service.HdfsClient;
 import org.trustedanalytics.servicebroker.framework.store.zookeeper.ZookeeperCredentialsStore;
+import org.trustedanalytics.servicebroker.hdfs.config.HdfsConstants;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsBindingClientFactory;
-
-import com.google.common.collect.ImmutableMap;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsProvisioningClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.users.GroupMappingOperations;
+
+import com.google.common.collect.ImmutableMap;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,6 +66,9 @@ public final class HdfsPlanGetUserDirectoryTest extends HdfsPlanTestBase {
   private ZookeeperCredentialsStore zookeeperCredentialsStore;
 
   @Mock
+  private Configuration hadoopConfiguration;
+
+  @Mock
   private GroupMappingOperations groupMappingOperations;
 
   @Before
@@ -71,9 +76,10 @@ public final class HdfsPlanGetUserDirectoryTest extends HdfsPlanTestBase {
     planUnderTest =
         new HdfsPlanGetUserDirectory(
             HdfsProvisioningClientFactory.create(hdfsClient, encryptedHdfsClient, USERSPACE_PATH_TEMPLATE),
-            HdfsBindingClientFactory.create(getInputCredentials(), USERSPACE_PATH_TEMPLATE),
+            HdfsBindingClientFactory.create(hadoopConfiguration, USERSPACE_PATH_TEMPLATE),
             groupMappingOperations,
             zookeeperCredentialsStore);
+    when(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS)).thenReturn("hdfs://name1/");
   }
 
   @Test

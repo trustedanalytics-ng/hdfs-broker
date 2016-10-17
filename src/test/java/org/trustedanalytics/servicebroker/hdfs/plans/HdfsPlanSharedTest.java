@@ -17,22 +17,16 @@ package org.trustedanalytics.servicebroker.hdfs.plans;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.startsWith;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getServiceInstance;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableMap;
-import org.apache.hadoop.fs.permission.*;
-import org.apache.http.annotation.Immutable;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.permission.FsAction;
+import org.apache.hadoop.fs.permission.FsPermission;
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.junit.Before;
@@ -40,8 +34,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import org.trustedanalytics.cfbroker.store.hdfs.service.HdfsClient;
+import org.trustedanalytics.servicebroker.hdfs.config.HdfsConstants;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsBindingClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsProvisioningClientFactory;
 import org.trustedanalytics.servicebroker.hdfs.util.TestUtil;
@@ -55,6 +49,9 @@ public final class HdfsPlanSharedTest extends HdfsPlanTestBase {
   private HdfsPlanShared planUnderTest;
 
   @Mock
+  private Configuration hadoopConfiguration;
+
+  @Mock
   private HdfsClient hdfsClient;
 
   @Mock
@@ -64,7 +61,8 @@ public final class HdfsPlanSharedTest extends HdfsPlanTestBase {
   public void setup() {
     planUnderTest = new HdfsPlanShared(
         HdfsProvisioningClientFactory.create(hdfsClient, encryptedHdfsClient, USERSPACE_PATH_TEMPLATE),
-        HdfsBindingClientFactory.create(getInputCredentials(), USERSPACE_PATH_TEMPLATE));
+        HdfsBindingClientFactory.create(hadoopConfiguration, USERSPACE_PATH_TEMPLATE));
+    when(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS)).thenReturn("hdfs://name1/");
   }
 
   @Test

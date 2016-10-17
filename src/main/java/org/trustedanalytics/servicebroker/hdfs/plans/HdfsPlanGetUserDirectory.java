@@ -32,10 +32,10 @@ import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinitio
 import org.trustedanalytics.servicebroker.framework.store.CredentialsStore;
 import org.trustedanalytics.servicebroker.hdfs.path.HdfsBrokerInstancePath;
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsSpecificOrgBindingOperations;
-
-import com.google.common.collect.ImmutableMap;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsDirectoryProvisioningOperations;
 import org.trustedanalytics.servicebroker.hdfs.users.GroupMappingOperations;
+
+import com.google.common.collect.ImmutableMap;
 
 @Component("get-user-directory")
 class HdfsPlanGetUserDirectory implements ServicePlanDefinition {

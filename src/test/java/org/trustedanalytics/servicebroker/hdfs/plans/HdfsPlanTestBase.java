@@ -16,13 +16,13 @@
 package org.trustedanalytics.servicebroker.hdfs.plans;
 
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
-import org.trustedanalytics.servicebroker.framework.Credentials;
 
 import com.google.common.collect.ImmutableMap;
 
 abstract class HdfsPlanTestBase {
 
-  static final String USERSPACE_PATH_TEMPLATE = "/org/%{organization}/brokers/userspace/%{instance}";
+  static final String USERSPACE_PATH_TEMPLATE =
+      "/org/%{organization}/brokers/userspace/%{instance}";
 
   String getDirectoryPathToProvision(ServiceInstance serviceInstance) {
     String orgId = serviceInstance.getOrganizationGuid();
@@ -36,32 +36,12 @@ abstract class HdfsPlanTestBase {
     return "hdfs://namespace/org/" + orgId + "/brokers/userspace/" + instanceId + "/";
   }
 
-  Credentials getInputCredentials() {
-    //@formatter:off
-    return new Credentials(ImmutableMap.of(
-        "key1", ImmutableMap.of(
-            "innerKey1", "innerValue1",
-            "innerKey2", "innerValue2"
-        ),
-        "key2", "value2",
-        "fs.defaultFS", "hdfs://name1"
-    ));
-    //@formatter:on
-  }
-
   ImmutableMap<String, Object> getExpectedOutputCredentialsMap(ServiceInstance serviceInstance) {
     String orgId = serviceInstance.getOrganizationGuid();
     String instanceId = serviceInstance.getServiceInstanceId();
-    //@formatter:off
-    return ImmutableMap.of(
-        "key1", ImmutableMap.of(
-            "innerKey1", "innerValue1",
-            "innerKey2", "innerValue2"
-        ),
-        "key2", "value2",
-        "fs.defaultFS", "hdfs://name1",
-        "uri", "hdfs://name1/org/" + orgId + "/brokers/userspace/" + instanceId + "/"
-    );
-    //@formatter:on
+    // @formatter:off
+    return ImmutableMap.of("uri",
+        "hdfs://name1/org/" + orgId + "/brokers/userspace/" + instanceId + "/");
+    // @formatter:on
   }
 }

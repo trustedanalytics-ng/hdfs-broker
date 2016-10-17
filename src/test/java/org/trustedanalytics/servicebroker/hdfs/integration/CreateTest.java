@@ -20,9 +20,7 @@ import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsAssert.deeplyEqualTo;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getCreateBindingRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getCreateInstanceRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getServiceInstance;
+import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.*;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -44,11 +42,12 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
 import org.trustedanalytics.cfbroker.store.hdfs.helper.HdfsPathTemplateUtils;
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
 import org.trustedanalytics.servicebroker.hdfs.config.Application;
 import org.trustedanalytics.servicebroker.hdfs.config.ExternalConfiguration;
+import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
+import org.trustedanalytics.servicebroker.hdfs.integration.config.HadoopTestConfiguration;
 import org.trustedanalytics.servicebroker.hdfs.integration.config.HdfsLocalConfiguration;
 import org.trustedanalytics.servicebroker.hdfs.integration.config.KerberosLocalConfiguration;
 import org.trustedanalytics.servicebroker.hdfs.integration.config.ZkLocalConfiguration;
@@ -57,7 +56,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class, HdfsLocalConfiguration.class, ZkLocalConfiguration.class,
-    KerberosLocalConfiguration.class})
+    KerberosLocalConfiguration.class, HadoopTestConfiguration.class})
 @WebAppConfiguration
 @IntegrationTest("server.port=0")
 @ActiveProfiles("integration-test")
@@ -66,7 +65,7 @@ public class CreateTest {
   private static final ObjectMapper mapper = new ObjectMapper();
 
   @Autowired
-  @Qualifier("user")
+  @Qualifier(Qualifiers.USER_QUALIFIER)
   private FileSystem userFileSystem;
 
   @Autowired

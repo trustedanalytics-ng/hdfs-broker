@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.servicebroker.hdfs.config.ExternalConfiguration;
+import org.trustedanalytics.servicebroker.hdfs.config.Qualifiers;
 
 @Configuration
 @Profile("integration-test")
@@ -39,14 +40,14 @@ public class HdfsLocalConfiguration {
   private ExternalConfiguration externalConfiguration;
 
   @Bean
-  @Qualifier("user")
+  @Qualifier(Qualifiers.USER_QUALIFIER)
   public FileSystem getUserFileSystem() throws InterruptedException, IOException,
       URISyntaxException {
     return FileSystemFactory.getFileSystem(externalConfiguration.getUserspaceChroot());
   }
 
   @Bean
-  @Qualifier("superUser")
+  @Qualifier(Qualifiers.SUPER_USER_QUALIFIER)
   public FileSystem getSuperUserFileSystem() throws InterruptedException, IOException,
       URISyntaxException {
     return FileSystemFactory.getFileSystem(externalConfiguration.getUserspaceChroot());

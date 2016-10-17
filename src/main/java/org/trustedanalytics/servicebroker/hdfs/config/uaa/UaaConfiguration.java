@@ -17,11 +17,11 @@ package org.trustedanalytics.servicebroker.hdfs.config.uaa;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Configuration
 public class UaaConfiguration {

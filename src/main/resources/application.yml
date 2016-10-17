@@ -7,16 +7,16 @@ hdfs:
   superuser: ${hdfs.user:hdfs}
   #path on hdfs where broker creates dirs for user apps
   userspace.chroot: ${broker.userspace.path:/org/%{organization}/brokers/userspace/%{instance}}
-  #encoded hadoop configuration files for hdfs
-  provided.zip: ${hadoop.provided.zip:{}}
-  #keytab for hdfs superuser, which will create encrypted zones
-  keytab: ${hdfs.keytab:{}}
+  #path on container where keytab for hdfs is
+  keytab.path: ${hdfs.keytab.path:}
+  #path on container where configuration for hdfs is
+  configuration.path: ${hdfs.configuration.path:}
 #parameters for communication between hdfs-broker and hadoop groups mapping server
 group.mapping:
   url: ${hgm.url}
   kerberos:
     principal: ${hgm.principal:}
-    principalKeyTab: ${hgm.principal.keytab:}
+    keytab.path: ${hgm.keytab.path:}
   https:
     username: ${hgm.username:}
     password: ${hgm.password:}
@@ -31,6 +31,7 @@ store:
   path: ${broker.store.znode:/broker/hdfs}
   user: ${system.user}
   password: ${system.user.password}
+  keytabPath: ${system.user.keytab.path}
 cf:
   catalog:
     serviceName: ${cf.catalog.servicename:hdfs}
@@ -38,10 +39,6 @@ cf:
     serviceDescription: HDFS service for creating directories on hadoop distributed file system.
     baseId: ${BASE_GUID:}
     plans:
-      - id: bare-plan
-        name: bare
-        description: This plan return HDFS configuration defined in core-site.xml and hdfs-site.xml
-        free: true
       - id: create-user-directory-plan
         name: create-user-directory
         description: This plan creates directory along with technical user who has only permissions for that directory (with HDFS configuration).

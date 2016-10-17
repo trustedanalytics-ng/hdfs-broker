@@ -18,20 +18,12 @@ package org.trustedanalytics.servicebroker.hdfs.integration;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getCreateBindingRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getCreateInstanceRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getDeleteBindingRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getDeleteInstanceRequest;
-import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getServiceInstance;
+import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.*;
 
 import java.io.IOException;
 import java.util.UUID;
 
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceBindingRequest;
-import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
-import org.cloudfoundry.community.servicebroker.model.DeleteServiceInstanceBindingRequest;
-import org.cloudfoundry.community.servicebroker.model.DeleteServiceInstanceRequest;
-import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
+import org.cloudfoundry.community.servicebroker.model.*;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
 import org.junit.Test;
@@ -42,14 +34,15 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
 import org.trustedanalytics.cfbroker.store.zookeeper.service.ZookeeperClient;
 import org.trustedanalytics.servicebroker.hdfs.config.Application;
 import org.trustedanalytics.servicebroker.hdfs.config.ExternalConfiguration;
+import org.trustedanalytics.servicebroker.hdfs.integration.config.HadoopTestConfiguration;
 import org.trustedanalytics.servicebroker.hdfs.integration.config.HdfsLocalConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class, HdfsLocalConfiguration.class})
+@SpringApplicationConfiguration(
+    classes = {Application.class, HdfsLocalConfiguration.class, HadoopTestConfiguration.class})
 @WebAppConfiguration
 @IntegrationTest("server.port=0")
 @ActiveProfiles("integration-test")
@@ -69,37 +62,40 @@ public class CreateDeleteThenGetTest {
 
   @Test
   public void deleteServiceInstancePlanShared_instanceCreated_getReturnsNull() throws Exception {
-    //arrange
+    // arrange
     String serviceInstanceId = UUID.randomUUID().toString();
     ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-shared-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);
 
-    //act
+    // act
     DeleteServiceInstanceRequest deleteRequest = getDeleteInstanceRequest(instance);
     serviceBean.deleteServiceInstance(deleteRequest);
 
-    //assert
+    // assert
     ServiceInstance serviceInstance = serviceBean.getServiceInstance(serviceInstanceId);
     assertThat(serviceInstance, is(nullValue()));
   }
 
   @Test(expected = IOException.class)
-  public void deleteBindingPlanShared_bindingCreated_bindingDeletedFromFileSystem() throws Exception {
-    //arrange
+  public void deleteBindingPlanShared_bindingCreated_bindingDeletedFromFileSystem()
+      throws Exception {
+    // arrange
     String bindingId = UUID.randomUUID().toString();
     String serviceInstanceId = UUID.randomUUID().toString();
     ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-shared-plan");
     serviceBean.createServiceInstance(getCreateInstanceRequest(instance));
 
-    CreateServiceInstanceBindingRequest bindReq = getCreateBindingRequest(serviceInstanceId).withBindingId(bindingId);
+    CreateServiceInstanceBindingRequest bindReq =
+        getCreateBindingRequest(serviceInstanceId).withBindingId(bindingId);
     bindingBean.createServiceInstanceBinding(bindReq);
 
-    //act
-    DeleteServiceInstanceBindingRequest deleteRequest = getDeleteBindingRequest(serviceInstanceId, bindReq);
+    // act
+    DeleteServiceInstanceBindingRequest deleteRequest =
+        getDeleteBindingRequest(serviceInstanceId, bindReq);
     bindingBean.deleteServiceInstanceBinding(deleteRequest);
 
-    //assert
+    // assert
     zkClient.getZNode(serviceInstanceId + "/" + bindingId);
   }
 }

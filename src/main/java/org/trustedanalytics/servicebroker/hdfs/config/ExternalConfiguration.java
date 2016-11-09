@@ -29,7 +29,7 @@ public class ExternalConfiguration {
   @Value("${store.user}")
   @NotNull
   @Getter @Setter
-  private String user;
+  private String brokerUser;
 
   @Value("${store.password}")
   @NotNull
@@ -39,7 +39,7 @@ public class ExternalConfiguration {
   @Value("${store.keytabPath}")
   @NotNull
   @Getter @Setter
-  private String keytabPah;
+  private String brokerUserKeytabPath;
 
   @Value("${hdfs.userspace.chroot}")
   @NotNull
@@ -49,7 +49,7 @@ public class ExternalConfiguration {
   @Value("${hdfs.superuser}")
   @NotNull
   @Getter @Setter
-  private String hdfsSuperuser;
+  private String hdfsSuperUser;
 
   @Value("${hdfs.keytab.path}")
   @NotNull

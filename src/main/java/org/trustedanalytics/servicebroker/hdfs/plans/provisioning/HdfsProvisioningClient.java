@@ -32,7 +32,6 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
 
   private static final FsPermission FS_PERMISSION = new FsPermission(FsAction.ALL, FsAction.ALL,
       FsAction.NONE);
-  private static final String TECH_GROUP_POSTFIX = "_sys";
 
   private final HdfsClient hdfsClient;
   private final HdfsClient superUserHdfsClient;
@@ -56,36 +55,6 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
       return path;
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to provision directory for: " + instanceId, e);
-    }
-  }
-
-  @Override
-  public String provisionDirectory(UUID instanceId, UUID orgId, UUID owner) throws ServiceBrokerException {
-    this.provisionDirectory(instanceId, orgId);
-    try {
-      String path = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
-      superUserHdfsClient.setOwner(path, owner.toString(), orgId.toString());
-      return path;
-    } catch (IOException e) {
-      throw new ServiceBrokerException("Unable to provision directory for: " + instanceId, e);
-    }
-  }
-
-  @Override
-  public void addSystemUsersGroupAcl(String path, UUID orgId) throws ServiceBrokerException {
-    try {
-      AclEntry.Builder builder = new AclEntry.Builder()
-          .setType(AclEntryType.GROUP)
-          .setPermission(FsAction.ALL)
-          .setName(orgId.toString() + TECH_GROUP_POSTFIX);
-
-      AclEntry systemDefaultUserAcl = builder.setScope(AclEntryScope.DEFAULT).build();
-      AclEntry systemUserAcl = builder.setScope(AclEntryScope.ACCESS).build();
-
-      setAclRecursively(path, systemUserAcl);
-      setAclRecursively(path, systemDefaultUserAcl);
-    } catch (IOException e) {
-      throw new ServiceBrokerException("Unable to add system users groups ACL for path: " + path, e);
     }
   }
 

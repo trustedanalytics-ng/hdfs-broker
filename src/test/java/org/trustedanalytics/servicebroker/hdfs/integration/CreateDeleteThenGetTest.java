@@ -64,7 +64,7 @@ public class CreateDeleteThenGetTest {
   public void deleteServiceInstancePlanShared_instanceCreated_getReturnsNull() throws Exception {
     // arrange
     String serviceInstanceId = UUID.randomUUID().toString();
-    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-shared-plan");
+    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);
 
@@ -83,7 +83,7 @@ public class CreateDeleteThenGetTest {
     // arrange
     String bindingId = UUID.randomUUID().toString();
     String serviceInstanceId = UUID.randomUUID().toString();
-    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-shared-plan");
+    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
     serviceBean.createServiceInstance(getCreateInstanceRequest(instance));
 
     CreateServiceInstanceBindingRequest bindReq =

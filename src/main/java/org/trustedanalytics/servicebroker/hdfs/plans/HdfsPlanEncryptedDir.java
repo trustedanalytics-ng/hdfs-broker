@@ -28,15 +28,15 @@ import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinitio
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsSpecificOrgBindingOperations;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsPlanEncryptedDirectoryProvisioningOperations;
 
-@Component("encrypted")
-class HdfsPlanEncrypted implements ServicePlanDefinition {
+@Component("encrypted-dir")
+class HdfsPlanEncryptedDir implements ServicePlanDefinition {
 
   private final HdfsPlanEncryptedDirectoryProvisioningOperations hdfsOperations;
   private final HdfsSpecificOrgBindingOperations bindingOperations;
 
   @Autowired
-  public HdfsPlanEncrypted(HdfsPlanEncryptedDirectoryProvisioningOperations hdfsOperations,
-      HdfsSpecificOrgBindingOperations bindingOperations) {
+  public HdfsPlanEncryptedDir(HdfsPlanEncryptedDirectoryProvisioningOperations hdfsOperations,
+                              HdfsSpecificOrgBindingOperations bindingOperations) {
     this.hdfsOperations = hdfsOperations;
     this.bindingOperations = bindingOperations;
   }

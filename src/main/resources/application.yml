@@ -11,21 +11,6 @@ hdfs:
   keytab.path: ${hdfs.keytab.path:}
   #path on container where configuration for hdfs is
   configuration.path: ${hdfs.configuration.path:}
-#parameters for communication between hdfs-broker and hadoop groups mapping server
-group.mapping:
-  url: ${hgm.url}
-  kerberos:
-    principal: ${hgm.principal:}
-    keytab.path: ${hgm.keytab.path:}
-  https:
-    username: ${hgm.username:}
-    password: ${hgm.password:}
-#parameters for communication between hdfs-broker and uaa
-uaa:
-  tokenUri: ${vcap.services.sso.credentials.tokenUri}
-  uri: ${vcap.services.sso.credentials.uaaUri}
-  clientId: ${vcap.services.sso.credentials.clientId}
-  clientSecret: ${vcap.services.sso.credentials.clientSecret}
 #optional parameters to configure zookeeper-store
 store:
   path: ${broker.store.znode:/broker/hdfs}
@@ -39,25 +24,13 @@ cf:
     serviceDescription: HDFS service for creating directories on hadoop distributed file system.
     baseId: ${BASE_GUID:}
     plans:
-      - id: create-user-directory-plan
-        name: create-user-directory
-        description: This plan creates directory along with technical user who has only permissions for that directory (with HDFS configuration).
+      - id: plain-dir-plan
+        name: plain-dir
+        description: Create directory on HDFS within storage space shared across your organization.
         free: true
-      - id: get-user-directory-plan
-        name: get-user-directory
-        description: This plan based on instance created in plan create-user-direcotry (requires parameter uri from this instance). It's able to return credentials and directory (with HDFS configuration).
-        free: true
-      - id: shared-plan
-        name: shared
-        description: This plan creates directory on hdfs where all users from organization have sufficient permissions (with HDFS configuration).
-        free: true
-      - id: encrypted-plan
-        name: encrypted
-        description: This plan creates directory with encryption zones, which allow for encryption at-rest on HDFS (with HDFS configuration).
-        free: true
-      - id: multitenant-plan
-        name: multitenant
-        description: This plan provides template for multitenant TAP applications.
+      - id: encrypted-dir-plan
+        name: encrypted-dir
+        description: Create encrypted directory on HDFS within storage space shared across your organization.
         free: true
     metadata:
       imageUrl: ${IMAGE_URL:}

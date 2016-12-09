@@ -28,15 +28,15 @@ import org.trustedanalytics.servicebroker.framework.service.ServicePlanDefinitio
 import org.trustedanalytics.servicebroker.hdfs.plans.binding.HdfsSpecificOrgBindingOperations;
 import org.trustedanalytics.servicebroker.hdfs.plans.provisioning.HdfsDirectoryProvisioningOperations;
 
-@Component("shared")
-class HdfsPlanShared implements ServicePlanDefinition {
+@Component("plain-dir")
+class HdfsPlanPlainDir implements ServicePlanDefinition {
 
   private final HdfsDirectoryProvisioningOperations hdfsOperations;
   private final HdfsSpecificOrgBindingOperations bindingOperations;
 
   @Autowired
-  public HdfsPlanShared(HdfsDirectoryProvisioningOperations hdfsOperations,
-      HdfsSpecificOrgBindingOperations bindingOperations) {
+  public HdfsPlanPlainDir(HdfsDirectoryProvisioningOperations hdfsOperations,
+                          HdfsSpecificOrgBindingOperations bindingOperations) {
     this.hdfsOperations = hdfsOperations;
     this.bindingOperations = bindingOperations;
   }

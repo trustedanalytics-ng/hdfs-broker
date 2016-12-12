@@ -84,7 +84,7 @@ public class CreateTest {
   public void createInstancePlanShared_validRequest_metadataSavedAndUserDirProvisioned() throws Exception {
     //arrange
     String testId = UUID.randomUUID().toString();
-    ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-shared-plan");
+    ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
 
     //act
@@ -101,7 +101,7 @@ public class CreateTest {
 
     String serviceInstanceId = UUID.randomUUID().toString();
     String bindingId = UUID.randomUUID().toString();
-    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-shared-plan");
+    ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
 
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);

@@ -50,7 +50,7 @@ public class CreateThenGetTest {
   public void getServiceInstancePlanShared_instanceCreated_returnsInstance() throws Exception {
     //arrange
     String testId = UUID.randomUUID().toString();
-    ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-shared-plan");
+    ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);
 

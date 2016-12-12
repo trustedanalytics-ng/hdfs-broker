@@ -31,28 +31,13 @@ cf:
     serviceDescription: fake_desc
     baseId: ${BASE_GUID:fakeBaseGuid}
     plans:
-      - id: create-user-directory-plan
-        name: create-user-directory
-        description: fake
+      - id: plain-dir-plan
+        name: plain-dir
+        description: Create directory on HDFS within storage space shared across your organization.
         free: true
-      - id: get-user-directory-plan
-        name: get-user-directory
-        description: fake
+      - id: encrypted-dir-plan
+        name: encrypted-dir
+        description: Create encrypted directory on HDFS within storage space shared across your organization.
         free: true
-      - id: shared-plan
-        name: shared
-        description: shared
-        free: true
-        provisioning: true
-      - id: encrypted-plan
-        name: encrypted
-        description: encrypted
-        free: true
-        provisioning: true
-      - id: multitenant-plan
-        name: multitenant
-        description: multitenant
-        free: true
-        provisioning: false
     metadata:
       imageUrl: ${IMAGE_URL:}

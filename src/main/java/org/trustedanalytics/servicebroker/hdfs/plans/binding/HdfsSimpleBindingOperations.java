@@ -16,8 +16,7 @@
 package org.trustedanalytics.servicebroker.hdfs.plans.binding;
 
 import java.util.Map;
-import java.util.UUID;
 
 public interface HdfsSimpleBindingOperations {
-  Map<String, Object> createCredentialsMap(UUID instanceId);
+  Map<String, Object> createCredentialsMap(String instanceId);
 }

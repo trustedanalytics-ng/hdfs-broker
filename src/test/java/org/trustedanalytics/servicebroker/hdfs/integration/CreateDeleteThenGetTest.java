@@ -21,7 +21,6 @@ import static org.hamcrest.core.Is.is;
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.*;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import org.cloudfoundry.community.servicebroker.model.*;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceBindingService;
@@ -63,7 +62,7 @@ public class CreateDeleteThenGetTest {
   @Test
   public void deleteServiceInstancePlanShared_instanceCreated_getReturnsNull() throws Exception {
     // arrange
-    String serviceInstanceId = UUID.randomUUID().toString();
+    String serviceInstanceId = "serviceInstanceId1";
     ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);
@@ -81,8 +80,8 @@ public class CreateDeleteThenGetTest {
   public void deleteBindingPlanShared_bindingCreated_bindingDeletedFromFileSystem()
       throws Exception {
     // arrange
-    String bindingId = UUID.randomUUID().toString();
-    String serviceInstanceId = UUID.randomUUID().toString();
+    String bindingId = "bindingId";
+    String serviceInstanceId = "serviceInstanceId2";
     ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
     serviceBean.createServiceInstance(getCreateInstanceRequest(instance));
 

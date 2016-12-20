@@ -15,11 +15,9 @@
  */
 package org.trustedanalytics.servicebroker.hdfs.plans.provisioning;
 
-import java.util.UUID;
-
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 
 public interface HdfsPlanEncryptedDirectoryProvisioningOperations
     extends HdfsDirectoryProvisioningOperations {
-  void createEncryptedZone(UUID instanceId, UUID orgId) throws ServiceBrokerException;
+  void createEncryptedZone(String instanceId, String orgId) throws ServiceBrokerException;
 }

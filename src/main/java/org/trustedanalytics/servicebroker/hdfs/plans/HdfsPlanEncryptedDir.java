@@ -17,7 +17,6 @@ package org.trustedanalytics.servicebroker.hdfs.plans;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.cloudfoundry.community.servicebroker.exception.ServiceBrokerException;
 import org.cloudfoundry.community.servicebroker.exception.ServiceInstanceExistsException;
@@ -44,16 +43,16 @@ class HdfsPlanEncryptedDir implements ServicePlanDefinition {
   @Override
   public void provision(ServiceInstance serviceInstance, Optional<Map<String, Object>> parameters)
       throws ServiceInstanceExistsException, ServiceBrokerException {
-    UUID instanceId = UUID.fromString(serviceInstance.getServiceInstanceId());
-    UUID orgId = UUID.fromString(serviceInstance.getOrganizationGuid());
+    String instanceId = serviceInstance.getServiceInstanceId();
+    String orgId = serviceInstance.getOrganizationGuid();
     hdfsOperations.provisionDirectory(instanceId, orgId);
     hdfsOperations.createEncryptedZone(instanceId, orgId);
   }
 
   @Override
   public Map<String, Object> bind(ServiceInstance serviceInstance) throws ServiceBrokerException {
-    UUID instanceId = UUID.fromString(serviceInstance.getServiceInstanceId());
-    UUID orgId = UUID.fromString(serviceInstance.getOrganizationGuid());
+    String instanceId = serviceInstance.getServiceInstanceId();
+    String orgId = serviceInstance.getOrganizationGuid();
     return bindingOperations.createCredentialsMap(instanceId, orgId);
   }
 }

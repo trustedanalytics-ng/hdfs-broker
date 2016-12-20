@@ -16,7 +16,6 @@
 package org.trustedanalytics.servicebroker.hdfs.plans.provisioning;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.*;
@@ -46,7 +45,7 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
   }
 
   @Override
-  public String provisionDirectory(UUID instanceId, UUID orgId) throws ServiceBrokerException {
+  public String provisionDirectory(String instanceId, String orgId) throws ServiceBrokerException {
     try {
       String path = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
       hdfsClient.createDir(path);
@@ -59,7 +58,7 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
   }
 
   @Override
-  public void addHiveUserGroupAcl(String path, UUID orgId) throws ServiceBrokerException {
+  public void addHiveUserGroupAcl(String path, String orgId) throws ServiceBrokerException {
     try {
       AclEntry.Builder builder = new AclEntry.Builder()
               .setType(AclEntryType.GROUP)
@@ -77,10 +76,10 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
   }
 
   @Override
-  public void createEncryptedZone(UUID instanceId, UUID orgId) throws ServiceBrokerException {
+  public void createEncryptedZone(String instanceId, String orgId) throws ServiceBrokerException {
     try {
       String path = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
-      superUserHdfsClient.createKeyAndEncryptedZone(instanceId.toString(), new Path(path));
+      superUserHdfsClient.createKeyAndEncryptedZone(instanceId, new Path(path));
     } catch (IOException e) {
       throw new ServiceBrokerException(
           "Unable to provision encrypted directory for: " + instanceId, e);

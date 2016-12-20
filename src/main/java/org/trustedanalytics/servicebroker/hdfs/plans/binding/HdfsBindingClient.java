@@ -17,7 +17,6 @@ package org.trustedanalytics.servicebroker.hdfs.plans.binding;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,16 +39,16 @@ class HdfsBindingClient
   }
 
   @Override
-  public Map<String, Object> createCredentialsMap(UUID instanceId) {
+  public Map<String, Object> createCredentialsMap(String instanceId) {
     return createCredentialsMap(instanceId, null);
   }
 
   @Override
-  public Map<String, Object> createCredentialsMap(UUID instanceId, UUID orgId) {
+  public Map<String, Object> createCredentialsMap(String instanceId, String orgId) {
     Map<String, Object> credentials = new HashMap<>();
 
     String dir = HdfsPathTemplateUtils.fill(userspacePathTemplate, instanceId, orgId);
-    String uri = DirHelper.concat(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS).toString(), dir);
+    String uri = DirHelper.concat(hadoopConfiguration.get(HdfsConstants.HADOOP_DEFAULT_FS), dir);
     credentials.put("uri", DirHelper.removeTrailingSlashes(uri) + "/");
 
     return credentials;

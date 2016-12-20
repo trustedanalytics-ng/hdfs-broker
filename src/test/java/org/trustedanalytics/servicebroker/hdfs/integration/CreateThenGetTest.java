@@ -20,8 +20,6 @@ import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsAsser
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getCreateInstanceRequest;
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.getServiceInstance;
 
-import java.util.UUID;
-
 import org.cloudfoundry.community.servicebroker.model.CreateServiceInstanceRequest;
 import org.cloudfoundry.community.servicebroker.model.ServiceInstance;
 import org.cloudfoundry.community.servicebroker.service.ServiceInstanceService;
@@ -49,7 +47,7 @@ public class CreateThenGetTest {
   @Test
   public void getServiceInstancePlanShared_instanceCreated_returnsInstance() throws Exception {
     //arrange
-    String testId = UUID.randomUUID().toString();
+    String testId = "testId";
     ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
     serviceBean.createServiceInstance(request);

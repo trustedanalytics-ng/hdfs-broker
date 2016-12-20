@@ -23,7 +23,6 @@ import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsAsser
 import static org.trustedanalytics.servicebroker.test.cloudfoundry.CfModelsFactory.*;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -83,7 +82,7 @@ public class CreateTest {
   @Test
   public void createInstancePlanShared_validRequest_metadataSavedAndUserDirProvisioned() throws Exception {
     //arrange
-    String testId = UUID.randomUUID().toString();
+    String testId = "testId";
     ServiceInstance instance = getServiceInstance(testId, "fakeBaseGuid-plain-dir-plan");
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);
 
@@ -99,8 +98,8 @@ public class CreateTest {
   @Test
   public void createBindingPlanShared_validRequest_credentialsReturnedBindingSavedOnFileSystem() throws Exception {
 
-    String serviceInstanceId = UUID.randomUUID().toString();
-    String bindingId = UUID.randomUUID().toString();
+    String serviceInstanceId = "serviceInstanceId";
+    String bindingId = "bindingId";
     ServiceInstance instance = getServiceInstance(serviceInstanceId, "fakeBaseGuid-plain-dir-plan");
 
     CreateServiceInstanceRequest request = getCreateInstanceRequest(instance);

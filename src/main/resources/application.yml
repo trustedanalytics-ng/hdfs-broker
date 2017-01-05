@@ -34,3 +34,25 @@ cf:
         free: true
     metadata:
       imageUrl: ${IMAGE_URL:}
+
+endpoints.enabled: false
+endpoints.health.enabled: true
+endpoints.info.enabled: true
+endpoints.info.sensitive: false
+
+# http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html#production-ready-application-info-git
+management:
+  info:
+    git:
+      mode: full
+
+# http://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-build-info
+info:
+  name: "@project.parent.artifactId@"
+  app_version: "@project.parent.version@"
+  build:
+    group: "@project.parent.groupId@"
+    artifact: "@project.parent.artifactId@"
+    version: "@project.parent.version@"
+    name: "@project.parent.name@"
+    time: "@build.time@"

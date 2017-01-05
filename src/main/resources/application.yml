@@ -48,11 +48,11 @@ management:
 
 # http://docs.spring.io/spring-boot/docs/current/reference/html/howto-build.html#howto-build-info
 info:
-  name: "@project.parent.artifactId@"
-  app_version: "@project.parent.version@"
+  name: "@project.artifactId@"
+  app_version: "@project.version@"
   build:
-    group: "@project.parent.groupId@"
-    artifact: "@project.parent.artifactId@"
-    version: "@project.parent.version@"
-    name: "@project.parent.name@"
+    group: "@project.groupId@"
+    artifact: "@project.artifactId@"
+    version: "@project.version@"
+    name: "@project.name@"
     time: "@build.time@"

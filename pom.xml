@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>hdfs-broker</artifactId>
-    <version>0.12.6</version>
+    <version>0.12.7</version>
 
     <parent>
         <groupId>org.trustedanalytics</groupId>
         <artifactId>spring-project-template</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.2</version>
     </parent>
 
     <properties>
@@ -19,6 +19,7 @@
         <jacoco-measurement-instructions>0.4700</jacoco-measurement-instructions>
         <jacoco-measurement-lines>0.6200</jacoco-measurement-lines>
         <jacoco-measurement-classes>0.6300</jacoco-measurement-classes>
+        <jacoco-measurement-branches>0.100</jacoco-measurement-branches>
         <docker.imageName>${project.artifactId}</docker.imageName>
         <build.time>${maven.build.timestamp}</build.time>
     </properties>
@@ -89,36 +90,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <includes>
-                        <include>src/**/*.java</include>
-                        <include>provision.sh</include>
-                        <include>deprovision.sh</include>
-                        <include>pack.sh</include>
-                    </includes>
-                    <excludes>
-                        <exclude>src/main/java/org/trustedanalytics/servicebroker/hdfs/config/BrokerConfig.java
-                        </exclude>
-                    </excludes>
-                    <mapping>
-                        <java>JAVADOC_STYLE</java>
-                        <sh>SCRIPT_STYLE</sh>
-                    </mapping>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>check-license</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

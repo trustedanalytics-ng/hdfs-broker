@@ -72,6 +72,6 @@ Cloud foundry resources that are helpful when troubleshooting service brokers :
 
 ## On the app side
 
-For spring applications use https://github.com/trustedanalytics/hadoop-spring-utils. 
+For spring applications use https://github.com/trustedanalytics-ng/hadoop-spring-utils. 
 
-For regular java applications use https://github.com/trustedanalytics/hadoop-utils. 
+For regular java applications use https://github.com/trustedanalytics-ng/hadoop-utils. 

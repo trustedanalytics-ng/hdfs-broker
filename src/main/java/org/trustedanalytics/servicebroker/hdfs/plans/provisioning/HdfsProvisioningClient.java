@@ -51,9 +51,28 @@ class HdfsProvisioningClient implements HdfsDirectoryProvisioningOperations,
       hdfsClient.createDir(path);
       hdfsClient.setPermission(path, FS_PERMISSION);
       addHiveUserGroupAcl(path, orgId);
+      addTapUserAcl(path, orgId);
       return path;
     } catch (IOException e) {
       throw new ServiceBrokerException("Unable to provision directory for: " + instanceId, e);
+    }
+  }
+
+  @Override
+  public void addTapUserAcl(String path, String orgId) throws ServiceBrokerException {
+    try {
+      AclEntry.Builder builder = new AclEntry.Builder()
+              .setType(AclEntryType.USER)
+              .setPermission(FsAction.ALL)
+              .setName("tap");
+
+      AclEntry tapDefaultUserAcl = builder.setScope(AclEntryScope.DEFAULT).build();
+      AclEntry tapUserAcl = builder.setScope(AclEntryScope.ACCESS).build();
+
+      setAclRecursively(path, tapUserAcl);
+      setAclRecursively(path, tapDefaultUserAcl);
+    } catch (IOException e) {
+      throw new ServiceBrokerException("Unable to add system users groups ACL for path: " + path, e);
     }
   }
 

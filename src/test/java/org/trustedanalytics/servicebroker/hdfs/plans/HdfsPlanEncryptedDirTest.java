@@ -83,7 +83,7 @@ public final class HdfsPlanEncryptedDirTest extends HdfsPlanTestBase {
         new Path(getDirectoryPathToProvision(serviceInstance)));
     verify(hdfsClient).setPermission(getDirectoryPathToProvision(serviceInstance), FS_PERMISSION);
 
-    verify(encryptedHdfsClient, times(2)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
+    verify(encryptedHdfsClient, times(4)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
 
     verifyNoMoreInteractions(hdfsClient, encryptedHdfsClient);
   }

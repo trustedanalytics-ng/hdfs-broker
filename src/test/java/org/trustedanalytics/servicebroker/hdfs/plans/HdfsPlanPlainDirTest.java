@@ -75,7 +75,7 @@ public final class HdfsPlanPlainDirTest extends HdfsPlanTestBase {
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveUserAcl());
     verify(encryptedHdfsClient).addAclEntry("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), TestUtil.hiveDefaultUserAcl());
 
-    verify(encryptedHdfsClient, times(2)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
+    verify(encryptedHdfsClient, times(4)).listFiles("/org/"+ serviceInstance.getOrganizationGuid()+"/brokers/userspace/"+serviceInstance.getServiceInstanceId(), true);
 
     verifyNoMoreInteractions(hdfsClient, encryptedHdfsClient);
   }
